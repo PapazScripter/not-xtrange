@@ -1,29 +1,37 @@
 // components/CharacterView.tsx
 import React from 'react';
-import { CharacterData } from '../types'; // se você tiver tipos definidos
 
-interface CharacterViewProps {
-  character: CharacterData;
+// Mapeamento simples de personagens para imagens
+const CHARACTER_IMAGES: Record<string, string> = {
+  alice: 'https://i.ibb.co/xxxxx/alice.png',
+  bob: 'https://i.ibb.co/yyyy/bob.png',
+  // adicione todos os personagens aqui
+};
+
+interface CharacterProps {
+  character: { id: string; name?: string }; // recebe o objeto character
   isScanning?: boolean;
   anomalyType?: string;
-  mode?: string;
+  mode?: 'room' | 'other';
 }
 
-export function CharacterView({ character, isScanning, anomalyType, mode }: CharacterViewProps) {
-  console.log('CharacterView render', character.name);
+export function CharacterView({ character, isScanning, anomalyType, mode }: CharacterProps) {
+  // Escolhe a imagem correta do personagem ou uma padrão
+  const imageUrl = CHARACTER_IMAGES[character.id] || 'https://i.ibb.co/default-avatar.png';
 
   return (
-    <div className="relative">
-      {/* Imagem do personagem */}
-      <img 
-        src={character.image || 'https://i.ibb.co/Y4hmRz8w/quarto.png'} 
-        alt={character.name} 
-        className="w-48 h-auto rounded-lg"
+    <div className={`relative w-48 h-64 flex flex-col items-center justify-end ${isScanning ? 'animate-pulse' : ''}`}>
+      {isScanning && (
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-red-700 text-white text-xs px-2 py-1 rounded">
+          SCAN ATIVO
+        </div>
+      )}
+      <img
+        src={imageUrl}
+        alt={character.name || character.id}
+        className={`w-full h-auto rounded-lg object-contain ${anomalyType ? 'border-2 border-yellow-400' : ''}`}
       />
-
-      {/* Informações extras */}
-      {isScanning && <div className="absolute top-0 left-0 bg-red-500 text-white p-1 text-xs">SCANNING</div>}
-      {anomalyType && <div className="absolute bottom-0 left-0 bg-yellow-500 text-black p-1 text-xs">{anomalyType}</div>}
+      <p className="text-white text-xs mt-2 font-mono">{character.name || character.id}</p>
     </div>
   );
 }
