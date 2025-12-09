@@ -20,7 +20,7 @@ export const CharacterView: React.FC<CharacterViewProps> = ({
   return (
     <div
       className={`relative flex flex-col items-center justify-center ${
-        mode === "room" ? "w-48" : "w-32"
+        mode === "room" ? "w-64 md:w-72" : "w-48 md:w-56"
       }`}
     >
       {/* Imagem do personagem */}
@@ -31,20 +31,19 @@ export const CharacterView: React.FC<CharacterViewProps> = ({
           isScanning ? "animate-pulse border-4 border-red-500" : ""
         }`}
         onError={(e) => {
-          // fallback caso a imagem falhe
           (e.currentTarget as HTMLImageElement).src =
-            "https://via.placeholder.com/150?text=Imagem+inexistente";
+            "https://via.placeholder.com/200?text=Imagem+inexistente";
         }}
       />
 
       {/* Nome do personagem */}
-      <span className="mt-2 text-white font-mono text-xs text-center">
+      <span className="mt-2 text-white font-mono text-sm md:text-base text-center">
         {character.name}
       </span>
 
       {/* Anomalia ou status */}
       {anomalyType && (
-        <span className="mt-1 text-yellow-300 font-mono text-xs">
+        <span className="mt-1 text-yellow-300 font-mono text-sm md:text-base">
           {anomalyType.toUpperCase()}
         </span>
       )}
