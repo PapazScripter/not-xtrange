@@ -6,7 +6,6 @@ import { getCharacterResponse, getInspectionResult } from './utils/gameLogic';
 import { playAmbience, stopAmbience, playSFX, playMusic, stopMusic, playGuitarString } from './utils/audio';
 import { DialogueBox } from './components/DialogueBox';
 import { CharacterView } from './components/CharacterView';
-import { ASSETS } from './constants';
 
 // Helper to get random character
 const getRandomCharacter = (excludeIds: string[] = []): CharacterData => {
