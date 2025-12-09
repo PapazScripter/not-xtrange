@@ -1,37 +1,18 @@
 // components/CharacterView.tsx
+import React from 'react';
 
-import React from "react";
+// Componente para exibir personagens
+export function CharacterView({ characterId }: { characterId: string }) {
+  console.log('CharacterView render', characterId);
 
-export default function CharacterView({ character }: { character: any }) {
-  if (!character) return null;
-
+  // Renderizar algo mínimo para build
   return (
-    <div
-      style={{
-        padding: "16px",
-        background: "#222",
-        color: "white",
-        borderRadius: "10px",
-        display: "flex",
-        flexDirection: "column",
-        gap: "10px",
-        maxWidth: "400px",
-      }}
-    >
-      <h2>{character.name || "Character"}</h2>
-      {character.description && <p>{character.description}</p>}
-      {character.image && (
-        <img
-          src={character.image}
-          alt={character.name}
-          style={{
-            width: "100%",
-            borderRadius: "8px",
-            objectFit: "cover",
-          }}
-        />
-      )}
+    <div>
+      <h2>Character: {characterId}</h2>
+      <p>Visualização do personagem vai aqui.</p>
     </div>
   );
 }
 
+// Se você quiser, também pode ter um export default (opcional)
+export default CharacterView;
