@@ -1,39 +1,55 @@
 // components/CharacterView.tsx
-import React from 'react';
+import React from "react";
+import { CharacterData } from "../types";
 
-// Mapeamento simples de personagens para imagens
-const CHARACTER_IMAGES: Record<string, string> = {
-  alice: 'https://i.ibb.co/xxxxx/alice.png',
-  bob: 'https://i.ibb.co/yyyy/bob.png',
-  // adicione todos os personagens aqui
-};
-
-interface CharacterProps {
-  character: { id: string; name?: string }; // recebe o objeto character
+interface CharacterViewProps {
+  character: CharacterData;
   isScanning?: boolean;
   anomalyType?: string;
-  mode?: 'room' | 'other';
+  mode?: "room" | "dialogue";
 }
 
-export function CharacterView({ character, isScanning, anomalyType, mode }: CharacterProps) {
-  // Escolhe a imagem correta do personagem ou uma padrão
-  const imageUrl = CHARACTER_IMAGES[character.id] || 'https://i.ibb.co/default-avatar.png';
+export const CharacterView: React.FC<CharacterViewProps> = ({
+  character,
+  isScanning = false,
+  anomalyType,
+  mode = "room",
+}) => {
+  if (!character) return null;
 
   return (
-    <div className={`relative w-48 h-64 flex flex-col items-center justify-end ${isScanning ? 'animate-pulse' : ''}`}>
-      {isScanning && (
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-red-700 text-white text-xs px-2 py-1 rounded">
-          SCAN ATIVO
-        </div>
-      )}
+    <div
+      className={`relative flex flex-col items-center justify-center ${
+        mode === "room" ? "w-48" : "w-32"
+      }`}
+    >
+      {/* Imagem do personagem */}
       <img
-        src={imageUrl}
-        alt={character.name || character.id}
-        className={`w-full h-auto rounded-lg object-contain ${anomalyType ? 'border-2 border-yellow-400' : ''}`}
+        src={character.imageUrl}
+        alt={character.name}
+        className={`object-contain transition-all duration-300 ${
+          isScanning ? "animate-pulse border-4 border-red-500" : ""
+        }`}
+        onError={(e) => {
+          // fallback caso a imagem falhe
+          (e.currentTarget as HTMLImageElement).src =
+            "https://via.placeholder.com/150?text=Imagem+inexistente";
+        }}
       />
-      <p className="text-white text-xs mt-2 font-mono">{character.name || character.id}</p>
+
+      {/* Nome do personagem */}
+      <span className="mt-2 text-white font-mono text-xs text-center">
+        {character.name}
+      </span>
+
+      {/* Anomalia ou status */}
+      {anomalyType && (
+        <span className="mt-1 text-yellow-300 font-mono text-xs">
+          {anomalyType.toUpperCase()}
+        </span>
+      )}
     </div>
   );
-}
+};
 
 export default CharacterView;
